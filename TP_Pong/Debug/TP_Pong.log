@@ -1,0 +1,4 @@
+﻿  CBall.cpp
+D:\Home\Documents\Ludus B\Algo\C++\TP_Pong\TP_Pong\CBall.cpp(145,38): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+D:\Home\Documents\Ludus B\Algo\C++\TP_Pong\TP_Pong\CBall.cpp(148,15): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+  TP_Pong.vcxproj -> D:\Home\Documents\Ludus B\Algo\C++\TP_Pong\Debug\TP_Pong.exe
