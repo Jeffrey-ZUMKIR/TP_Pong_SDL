@@ -1,4 +1,6 @@
-﻿  CBall.cpp
-D:\Home\Documents\Ludus B\Algo\C++\TP_Pong_SDL\TP_Pong\CBall.cpp(145,38): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-D:\Home\Documents\Ludus B\Algo\C++\TP_Pong_SDL\TP_Pong\CBall.cpp(148,15): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+﻿  main.cpp
+D:\Home\Documents\Ludus B\Algo\C++\TP_Pong_SDL\TP_Pong\main.cpp(140,15): warning C4244: 'argument' : conversion de 'time_t' en 'unsigned int', perte possible de données
+D:\Home\Documents\Ludus B\Algo\C++\TP_Pong_SDL\TP_Pong\main.cpp(213,39): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
+D:\Home\Documents\Ludus B\Algo\C++\TP_Pong_SDL\TP_Pong\main.cpp(214,39): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
+D:\Home\Documents\Ludus B\Algo\C++\TP_Pong_SDL\TP_Pong\main.cpp(275,27): warning C4305: '-=' : troncation de 'double' à 'float'
   TP_Pong.vcxproj -> D:\Home\Documents\Ludus B\Algo\C++\TP_Pong_SDL\Debug\TP_Pong.exe
