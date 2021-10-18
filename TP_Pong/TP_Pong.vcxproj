@@ -142,14 +142,23 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Affichage.cpp" />
     <ClCompile Include="CBall.cpp" />
     <ClCompile Include="CPlayer.cpp" />
+    <ClCompile Include="CRenderer.cpp" />
+    <ClCompile Include="Event.cpp" />
+    <ClCompile Include="Init.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Affichage.h" />
     <ClInclude Include="CBall.h" />
     <ClInclude Include="CPlayer.h" />
+    <ClInclude Include="CRenderer.h" />
+    <ClInclude Include="CText.h" />
     <ClInclude Include="define.h" />
+    <ClInclude Include="Event.h" />
+    <ClInclude Include="Init.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -2,18 +2,35 @@
 #include "define.h"
 #include "SDL.h"
 
+#include <iostream>
+#include <string>
+
 //GOAL	: Set the variables at the creation of the object
 //INPUT	: The width, height, the phase, x, y, the texture and the score
 //OUTPUT: The player
-CPlayer::CPlayer(int width, int height, int x, int y, phase actualPhase, SDL_Texture* pTexture, int score)
+CPlayer::CPlayer()
 {
-	this->height = height;
+	/*this->height = height;
 	this->width = width;
 	this->x = x;
 	this->y = y;
 	this->actualPhase = actualPhase;
 	this->pTexture = pTexture;
-	this->score = score;
+	this->score = score;*/
+	this->actualPhase = phase::IDLE;
+	this->pTexture = NULL;
+	this->score = 0;
+
+	//this->rectP = new SDL_Rect;
+	this->rectP.x = 0;
+	this->rectP.y = 0;
+	this->rectP.w = 0;
+	this->rectP.h = 0;
+	//this->rectScore = new SDL_Rect;
+	this->rectScore.x = 0;
+	this->rectScore.y = 0;
+	this->rectScore.w = 0;
+	this->rectScore.h = 0;
 }
 
 //GOAL	: Free the memory
@@ -21,7 +38,9 @@ CPlayer::CPlayer(int width, int height, int x, int y, phase actualPhase, SDL_Tex
 //OUPUT	: /
 CPlayer::~CPlayer()
 {
+	//delete rectP;
 	SDL_DestroyTexture(this->pTexture);
+	SDL_DestroyTexture(this->pTextScore);
 }
 
 //GOAL	: Set width
@@ -29,7 +48,7 @@ CPlayer::~CPlayer()
 //OUPUT	: Width of player set
 void CPlayer::setWidth(int width)
 {
-	this->width = width;
+	this->rectP.w = width;
 }
 
 //GOAL	: Set height
@@ -37,7 +56,7 @@ void CPlayer::setWidth(int width)
 //OUPUT	: Height of player set
 void CPlayer::setHeight(int height)
 {
-	this->height = height;
+	this->rectP.h = height;
 }
 
 //GOAL	: Set x
@@ -45,7 +64,7 @@ void CPlayer::setHeight(int height)
 //OUPUT	: Xidth of player set
 void CPlayer::setX(int x)
 {
-	this->x = x;
+	this->rectP.x= x;
 }
 
 //GOAL	: Set y
@@ -53,7 +72,15 @@ void CPlayer::setX(int x)
 //OUPUT	: Y of player set
 void CPlayer::setY(int y)
 {
-	this->y = y;
+	this->rectP.y = y;
+}
+
+void CPlayer::setRect(int x, int y, int width, int height)
+{
+	this->rectP.x = x;
+	this->rectP.y = y;
+	this->rectP.w = width;
+	this->rectP.h = height;
 }
 
 //GOAL	: Set texture
@@ -80,12 +107,31 @@ void CPlayer::setScore(int score)
 	this->score = score;
 }
 
+void CPlayer::setTextScore(TextStyle style, SDL_Renderer* render)
+{
+	//Get score player 1
+	std::string str_score = std::to_string(this->getScore());
+	char* ch_score = const_cast<char*>(str_score.c_str());
+
+	//Set surface and texture of score 1
+	SDL_Surface* pScore = TTF_RenderText_Solid(style.font, ch_score, style.color);
+	this->pTextScore = SDL_CreateTextureFromSurface(render, pScore);
+}
+
+void CPlayer::setRectScore(int x, int y, int width, int height)
+{
+	this->rectScore.x = x;
+	this->rectScore.y = y;
+	this->rectScore.w = width;
+	this->rectScore.h = height;
+}
+
 //GOAL	: Get width
 //INPUT	: /
 //OUTPUT: Width of player
 int CPlayer::getWidth()
 {
-	return this->width;
+	return this->rectP.w;
 }
 
 //GOAL	: Get height
@@ -93,7 +139,7 @@ int CPlayer::getWidth()
 //OUTPUT: Height of player
 int CPlayer::getHeight()
 {
-	return this->height;
+	return this->rectP.h;
 }
 
 //GOAL	: Get x
@@ -101,7 +147,7 @@ int CPlayer::getHeight()
 //OUTPUT: X of player
 int CPlayer::getX()
 {
-	return this->x;
+	return this->rectP.x;
 }
 
 //GOAL	: Get y
@@ -109,7 +155,12 @@ int CPlayer::getX()
 //OUTPUT: Y of player
 int CPlayer::getY()
 {
-	return this->y;
+	return this->rectP.y;
+}
+
+SDL_Rect* CPlayer::getRect()
+{
+	return &this->rectP;
 }
 
 //GOAL	: Get texture
@@ -136,6 +187,16 @@ int CPlayer::getScore()
 	return this->score;
 }
 
+SDL_Texture* CPlayer::getTextScore()
+{
+	return this->pTextScore;
+}
+
+SDL_Rect* CPlayer::getRectScore()
+{
+	return &rectScore;
+}
+
 //GOAL	: Set the position
 //INPUT	: The movement and the height of the page
 //OUTPUT: A new position
@@ -145,7 +206,7 @@ void CPlayer::setPosition(int move, int WHEIGHT)
 	if (this->getY() < 0) {
 		this->setY(0);
 	}
-	else if (this->getY()>WHEIGHT-this->getHeight()) {
+	else if (this->getY() >WHEIGHT- this->getHeight()) {
 		this->setY(WHEIGHT - this->getHeight());
 	}
 }

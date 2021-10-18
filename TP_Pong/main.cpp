@@ -10,6 +10,11 @@
 #include <time.h> 
 #include <iostream>
 #include <string>
+#include "CRenderer.h"
+#include "Init.h"
+#include "CText.h"
+#include "Event.h"
+#include "Affichage.h"
 
 const int WWIDTH = 1200;
 const int WHEIGHT = 600;
@@ -25,9 +30,18 @@ int main(int argc, char** argv)
         fprintf(stdout, "Échec de l'initialisation de la SDL (%s)\n", SDL_GetError());
         return -1;
     }
+    CRenderer render;
 
+    CPlayer player1;
+    CPlayer player2;
+
+    CBall ball;
+
+    TextStyle style;
+
+    Initialisation(WWIDTH, WHEIGHT, render, player1, player2, ball, style);
     //Create window
-    SDL_Window* pWindow = NULL;
+    /*SDL_Window* pWindow = NULL;
     pWindow = SDL_CreateWindow("SDL2", SDL_WINDOWPOS_UNDEFINED,
         SDL_WINDOWPOS_UNDEFINED,
         WWIDTH,
@@ -36,16 +50,23 @@ int main(int argc, char** argv)
 
     if (!pWindow) {
         return -1;
+    }*/
+    if (!render.getWindow()) {
+        return -1;
+    }
+
+    if (!render.getRenderer()) {
+        return -1;
     }
 
     //Create renderer
-    Uint32 render_flags = SDL_RENDERER_ACCELERATED;
+    /*Uint32 render_flags = SDL_RENDERER_ACCELERATED;
 
     SDL_Renderer* pRenderer = SDL_CreateRenderer(pWindow, -1, render_flags);
 
     if (!pRenderer) {
         return -1;
-    }
+    }*/
 
     //TTF_Init();
     if (TTF_Init() == -1)
@@ -54,7 +75,7 @@ int main(int argc, char** argv)
         exit(EXIT_FAILURE);
     }
 
-    //Init player
+    /*//Init player
     CPlayer player1(20, 150, 100, (WHEIGHT / 2) - 150 / 2, phase::IDLE);
     CPlayer player2(20, 150, WWIDTH-100-20, (WHEIGHT / 2) - (150 / 2), phase::IDLE);
 
@@ -68,8 +89,8 @@ int main(int argc, char** argv)
     SDL_FreeSurface(pSurfacePlayer);
 
     SDL_Rect rectDestP1 = { 0,0,0,0 };
-    SDL_Rect rectDestP2 = { 0,0,0,0 };
-
+    SDL_Rect rectDestP2 = { 0,0,0,0 };*/
+    /*
     //Init ball
     CBall ball(20, 20, (WWIDTH / 2) - 10, (WHEIGHT / 2) - 10, 0, 0);
 
@@ -79,23 +100,23 @@ int main(int argc, char** argv)
 
     SDL_FreeSurface(pSurfaceBall);
 
-    SDL_Rect rectDestBall = { 0,0,0,0 };
-
+    SDL_Rect rectDestBall = { 0,0,0,0 };*/
+    
     //Var for while of the game
     int close = 0;
 
     //Middle line
     SDL_Rect rectDestBorder = { (WWIDTH / 2) - 5,0,10,WHEIGHT };
 
-
+    /*
     //Font and color for score
     TTF_Font* font = TTF_OpenFont("ArialCE.ttf", 50);
 
     SDL_Color color = { 255, 255, 255 };
 
-
+    */
     //Score Player 1
-    SDL_Surface* pScore1;
+    /*SDL_Surface* pScore1;
     SDL_Texture* pTextSc1;
 
     SDL_Rect rectDestSc1 = { 0,0,0,0 };
@@ -129,7 +150,7 @@ int main(int argc, char** argv)
 
     //Set surface and texture of score 2
     pScore2 = TTF_RenderText_Solid(font, ch_score2, color);
-    pTextSc2 = SDL_CreateTextureFromSurface(pRenderer, pScore2);
+    pTextSc2 = SDL_CreateTextureFromSurface(pRenderer, pScore2);*/
 
     //Bool to launch ball at the start of the round
     bool roundStart = true;
@@ -138,27 +159,30 @@ int main(int argc, char** argv)
     int winnerRound = 0;
     //for random beginner
     srand(time(NULL));
-    int n_i;
+    int n_i = 0;
 
     //Timer
-    float timer = 3.f;
+    /*float timer = 3.f;
     std::string str_timer = std::to_string(timer+1);
     char* ch_timer = const_cast<char*>(str_timer.c_str());
-    SDL_Surface* pTimer = TTF_RenderText_Solid(font, ch_timer, color);
-    SDL_Texture* pTextTimer = SDL_CreateTextureFromSurface(pRenderer, pTimer);
+    SDL_Surface* pTimer = TTF_RenderText_Solid(style.font, ch_timer, style.color);
+    SDL_Texture* pTextTimer = SDL_CreateTextureFromSurface(render.getRenderer(), pTimer);
 
     SDL_Rect rectDestTimer = { 0, 0, 0, 0 };
     rectDestTimer.x = WWIDTH / 2-25;
     rectDestTimer.y = WHEIGHT / 2-50;
     rectDestTimer.w = 50;
-    rectDestTimer.h = 100;
+    rectDestTimer.h = 100;*/
 
 
     //Gameplay
     while (!close) {
         SDL_Event event;
+        //Background
+        SDL_SetRenderDrawColor(render.getRenderer(), 0, 0, 0, 255);
+        SDL_RenderClear(render.getRenderer());
 
-        if (pRenderer) {
+        /*if (pRenderer) {
             //Background
             SDL_SetRenderDrawColor(pRenderer, 0, 0, 0, 255);
             SDL_RenderClear(pRenderer);
@@ -170,9 +194,9 @@ int main(int argc, char** argv)
         }
         else {
             return -1;
-        }
+        }*/
 
-        if (!roundStart) {
+        /*if (!roundStart) {
             //Score 1
             str_score1 = std::to_string(player1.getScore());
             ch_score1 = const_cast<char*>(str_score1.c_str());
@@ -216,10 +240,11 @@ int main(int argc, char** argv)
             rectDestBall.h = ball.getHeight();
 
             SDL_RenderCopy(pRenderer, ball.getTexture(), NULL, &rectDestBall);
-        }
+        }*/
 
         //Check for event
-        while (SDL_PollEvent(&event)) {
+        HandleEvent(event, close, player1, player2);
+        /*while (SDL_PollEvent(&event)) {
             switch (event.type) {
             //Close window
             case SDL_QUIT:
@@ -258,30 +283,33 @@ int main(int argc, char** argv)
                 }
                 break;
             }
-        }
+        }*/
         //Movement player
         player1.move(WHEIGHT);
+        player2.move(WHEIGHT);
+        ball.checkPos(WHEIGHT, WWIDTH, player1, player2, MAXSPEEDBALL);
+/*        player1.move(WHEIGHT);
 
         player2.move(WHEIGHT);
 
         //Check position of the ball for collision
         ball.checkPos(WHEIGHT, WWIDTH, rectDestP1, rectDestP2, player1, player2, MAXSPEEDBALL);
-
+        */
         //Launch ball at the beginning of the round
         if (roundStart) {
             //Show timer on screen
             player1.setScore(0);
             player2.setScore(0);
-            timer -= 0.015;
+            //timer -= 0.015;
 
-            str_timer = std::to_string(static_cast<int>(timer + 1));
+            /*str_timer = std::to_string(static_cast<int>(timer + 1));
             ch_timer = const_cast<char*>(str_timer.c_str());
             pTimer = TTF_RenderText_Solid(font, ch_timer, color);
-            pTextTimer = SDL_CreateTextureFromSurface(pRenderer, pTimer);
+            pTextTimer = SDL_CreateTextureFromSurface(pRenderer, pTimer);*/
 
-            SDL_RenderCopy(pRenderer, pTextTimer, NULL, &rectDestTimer);
+            //SDL_RenderCopy(pRenderer, pTextTimer, NULL, &rectDestTimer);
             //when timer is = to 0, launch the ball and show the game
-            if (timer <= 0.f) {
+            //if (timer <= 0.f) {
                 n_i = (rand() % 2) + 1;
                 switch (n_i) {
                 case 1:
@@ -292,12 +320,12 @@ int main(int argc, char** argv)
                     break;
                 }
                 ball.LaunchBall(MAXSPEEDBALL, WWIDTH, WHEIGHT, winnerRound);
-                timer = 3.f;
+                //timer = 3.f;
                 roundStart = false;
-            }
+            //}
             
         }
-
+        /*
         //Win condition
         if (player1.getScore() >= MAXSCORE || player2.getScore()>= MAXSCORE) {
             roundStart = true;
@@ -305,31 +333,32 @@ int main(int argc, char** argv)
             player1.setY((WHEIGHT / 2) - (150 / 2));
             player2.setScore(0);
             player2.setY((WHEIGHT / 2) - (150 / 2));
-        }
+        }*/
 
         //Display
-        SDL_RenderPresent(pRenderer);
+        Affiche(render, player1, player2, ball, rectDestBorder);
+        //SDL_RenderPresent(render.getRenderer());
 
         //60 FPS
         SDL_Delay(1000 / 60);
     }
 
-    //Destroy Texture
+    /*//Destroy Texture
     SDL_DestroyTexture(pTextSc1);
-    SDL_DestroyTexture(pTextSc2);
+    SDL_DestroyTexture(pTextSc2);*/
 
-    //Destroy Surface
+    /*//Destroy Surface
     SDL_FreeSurface(pScore1);
-    SDL_FreeSurface(pScore2);
+    SDL_FreeSurface(pScore2);*/
 
-    //Destroy renderer
-    SDL_DestroyRenderer(pRenderer);
+    /*//Destroy renderer
+    SDL_DestroyRenderer(render.getRenderer());
 
     //Destroy window
-    SDL_DestroyWindow(pWindow);
+    SDL_DestroyWindow(pWindow);*/
 
     //Close TTF
-    TTF_CloseFont(font);
+    TTF_CloseFont(style.font);
     TTF_Quit();
 
     //Quit game

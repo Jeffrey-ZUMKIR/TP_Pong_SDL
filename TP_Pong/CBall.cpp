@@ -6,15 +6,20 @@
 //GOAL	: Set the variables at the creation of the object
 //INPUT	: The width, height, the phase, x, y, angle, speedx, speedy and the Texture
 //OUTPUT: The ball
-CBall::CBall(int width, int height, float x, float y, int speedx, int speedy, SDL_Texture* pTexture)
+CBall::CBall()
 {
-	this->width = width;
+	//this->rectB = new SDL_Rect;
+	/*this->width = width;
 	this->height = height;
 	this->x = x;
 	this->y = y;
 	this->speedx = speedx;
 	this->speedy = speedy;
-	this->pTexture = pTexture;
+	this->pTexture = pTexture;*/
+	this->speedx = 0;
+	this->speedy = 0;
+	rectB = { 0,0,0,0 };
+	pTexture = NULL;
 }
 
 //GOAL	: Free the memory
@@ -30,7 +35,7 @@ CBall::~CBall()
 //OUTPUT: Width of ball set
 void CBall::setWidth(int width)
 {
-	this->width = width;
+	this->rectB.w = width;
 }
 
 //GOAL	: Set height
@@ -38,23 +43,23 @@ void CBall::setWidth(int width)
 //OUTPUT: Height of ball set
 void CBall::setHeight(int height)
 {
-	this->height = height;
+	this->rectB.h = height;
 }
 
 //GOAL	: Set x
 //INPUT	: X
 //OUTPUT: X of ball set
-void CBall::setX(float x)
+void CBall::setX(int x)
 {
-	this->x = x;
+	this->rectB.x = x;
 }
 
 //GOAL	: Set y
 //INPUT	: Y
 //OUTPUT: Y of ball set
-void CBall::setY(float y)
+void CBall::setY(int y)
 {
-	this->y = y;
+	this->rectB.y = y;
 }
 
 //GOAL	: Set texture
@@ -65,18 +70,28 @@ void CBall::setTexture(SDL_Texture* texture)
 	this->pTexture = texture;
 }
 
+void CBall::setRect(int x, int y, int width, int height)
+{
+	this->rectB.x = x;
+	this->rectB.y = y;
+	this->rectB.w = width;
+	this->rectB.h = height;
+}
+
 //GOAL	: Set speedx
 //INPUT	: Speedx
 //OUTPUT: Speedx of ball set
-void CBall::setSpeedx(int)
+void CBall::setSpeedx(int speedX)
 {
+	this->speedx = speedX;
 }
 
 //GOAL	: Set Speedy
 //INPUT	: Speedy
 //OUTPUT: Speedy of ball set
-void CBall::setSpeedy(int)
+void CBall::setSpeedy(int speedY)
 {
+	this->speedy = speedY;
 }
 
 //GOAL	: Get width
@@ -84,7 +99,7 @@ void CBall::setSpeedy(int)
 //OUTPUT: Width of ball
 int CBall::getWidth()
 {
-	return this->width;
+	return this->rectB.w;
 }
 
 //GOAL	: Get height
@@ -92,23 +107,28 @@ int CBall::getWidth()
 //OUTPUT: Height of ball
 int CBall::getHeight()
 {
-	return this->height;
+	return this->rectB.h;
 }
 
 //GOAL	: Get x
 //INPUT	: /
 //OUTPUT: X of ball
-float CBall::getX()
+int CBall::getX()
 {
-	return this->x;
+	return this->rectB.x;
 }
 
 //GOAL	: Get y
 //INPUT	: /
 //OUTPUT: Y of ball
-float CBall::getY()
+int CBall::getY()
 {
-	return this->y;
+	return this->rectB.y;
+}
+
+SDL_Rect* CBall::getRect()
+{
+	return &this->rectB;
 }
 
 //GOAL	: Get texture
@@ -140,12 +160,12 @@ int CBall::getSpeedy()
 //OUTPUT: The speed of the ball and it's direction
 void CBall::LaunchBall(int MAXSPEEDBALL, int WWIDTH, int WHEIGHT, int winnerRound)
 {
-	this->y = WHEIGHT / static_cast<float>(2);
+	this->rectB.y = WHEIGHT / static_cast<float>(2);
 	if (winnerRound == 1) {
-		this->x = static_cast<int> (WWIDTH / static_cast<float>(4));
+		this->rectB.x = static_cast<int> (WWIDTH / static_cast<float>(4));
 	}
 	else if (winnerRound == -1) {
-		this->x = 3 * static_cast<int> (WWIDTH / static_cast<float>(4));
+		this->rectB.x = 3 * static_cast<int> (WWIDTH / static_cast<float>(4));
 	}
 	this->speedy = 0;
 	this->speedx = MAXSPEEDBALL * winnerRound;
@@ -154,7 +174,7 @@ void CBall::LaunchBall(int MAXSPEEDBALL, int WWIDTH, int WHEIGHT, int winnerRoun
 //GOAL	: Check the collision of the ball with his collision
 //INPUT	: Height of the window, width of the window, rect of the player 1 and 2
 //OUTPUT: New speed for the ball
-void CBall::checkPos(int WHEIGHT, int WWIDTH, SDL_Rect rectDestP1, SDL_Rect rectDestP2, CPlayer& p1, CPlayer& p2, int MAXSPEEDBALL)
+void CBall::checkPos(int WHEIGHT, int WWIDTH, CPlayer& p1, CPlayer& p2, int MAXSPEEDBALL)
 {
 	//Check if the ball is in collision with the top of the window
 	if (this->getY() <= 0) {
@@ -166,13 +186,13 @@ void CBall::checkPos(int WHEIGHT, int WWIDTH, SDL_Rect rectDestP1, SDL_Rect rect
 	}
 
 	//Check if the ball is in collision with the player 1
-	if (this->getX() <= rectDestP1.x + rectDestP1.w && this->getX() >= rectDestP1.x && this->getY() + this->getHeight() >= rectDestP1.y && this->getY() <= rectDestP1.y + rectDestP1.h) {
+	if (this->getX() <= p1.getX() + p1.getWidth() && this->getX() >= p1.getX() && this->getY() + this->getHeight() >= p1.getY() && this->getY() <= p1.getY() + p1.getHeight()) {
 		if (this->speedx < 0) {
 			//Change the direction of the ball direction depending of where the collision is happening
 			//Get the distance between the collision and the middle of the player 1 (get a number between -75 and 75
-			float relativeIntersect = (rectDestP1.y + (rectDestP1.h / static_cast<float>(2))) - (this->getY() + (this->getHeight() / static_cast<float>(2)));
+			float relativeIntersect = (p1.getY() + (p1.getHeight() / static_cast<float>(2))) - (this->getY() + (this->getHeight() / static_cast<float>(2)));
 			//Get a position normalized around -1 and 1
-			float normalizedRelativeIntersectionY = (relativeIntersect / (rectDestP1.h / static_cast<float>(2)));
+			float normalizedRelativeIntersectionY = (relativeIntersect / (p1.getHeight() / static_cast<float>(2)));
 			//Calculate the bounce angle 
 			float bounceAngle = static_cast<float>(normalizedRelativeIntersectionY * 4*PI/12);
 
@@ -183,13 +203,13 @@ void CBall::checkPos(int WHEIGHT, int WWIDTH, SDL_Rect rectDestP1, SDL_Rect rect
 	}
 
 	//Check if the ball is in collision with the player 2
-	if (this->getX() + this->getWidth() >= rectDestP2.x && this->getX() <= rectDestP2.x + rectDestP2.w && this->getY() + this->getHeight() >= rectDestP2.y && this->getY() <= rectDestP2.y + rectDestP2.h) {
+	if (this->getX() + this->getWidth() >= p2.getX() && this->getX() <= p2.getX() + p2.getWidth() && this->getY() + this->getHeight() >= p2.getY() && this->getY() <= p2.getY() + p2.getHeight()) {
 		if (this->speedx > 0) {
 			//Change the direction of the ball direction depending of where the collision is happening
 			//Get the distance between the collision and the middle of the player 1 (get a number between -75 and 75
-			float relativeIntersect = (rectDestP2.y + (rectDestP2.h / static_cast<float>(2))) - (this->getY() + (this->getHeight() / static_cast<float>(2)));
+			float relativeIntersect = (p2.getY() + (p2.getHeight() / static_cast<float>(2))) - (this->getY() + (this->getHeight() / static_cast<float>(2)));
 			//Get a position normalized around -1 and 1
-			float normalizedRelativeIntersectionY = (relativeIntersect / (rectDestP2.h / static_cast<float>(2)));
+			float normalizedRelativeIntersectionY = (relativeIntersect / (p2.getHeight() / static_cast<float>(2)));
 			//Calculate the bounce angle 
 			float bounceAngle = static_cast<float>(normalizedRelativeIntersectionY * 4 * PI / 12);
 

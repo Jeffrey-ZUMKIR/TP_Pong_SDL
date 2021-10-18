@@ -5,16 +5,17 @@
 
 class CBall {
 private:
-	int width;
+	/*int width;
 	int height;
-	float x, y;
+	float x, y;*/
+	SDL_Rect rectB;
 
 	int speedx, speedy;
 
 	SDL_Texture* pTexture;
 public:
 	//Constructeur
-	CBall(int width = 0, int height = 0, float x = 0, float y = 0, int speedx = -4, int speedy = -4, SDL_Texture* pTexture = NULL);
+	CBall();
 
 	//Destructeur
 	~CBall();
@@ -22,8 +23,9 @@ public:
 	//Mutateurs
 	void setWidth(int);
 	void setHeight(int);
-	void setX(float);
-	void setY(float);
+	void setX(int);
+	void setY(int);
+	void setRect(int x, int y, int width, int height);
 	void setSpeedx(int);
 	void setSpeedy(int);
 	void setTexture(SDL_Texture*);
@@ -31,8 +33,9 @@ public:
 	//Ascesseurs
 	int getWidth();
 	int getHeight();
-	float getX();
-	float getY();
+	int getX();
+	int getY();
+	SDL_Rect* getRect();
 	int getSpeedx();
 	int getSpeedy();
 	SDL_Texture* getTexture();
@@ -40,7 +43,7 @@ public:
 	//Movement
 	void LaunchBall(int MAXSPEEDBALL, int WWIDTH, int WHEIGHT, int winnerRound);
 	void moveBall();
-	void checkPos(int WHEIGHT, int WWIDTH, SDL_Rect rectDestP1, SDL_Rect rectDestP2, CPlayer& p1, CPlayer& p2, int MAXSPEEDBALL);
+	void checkPos(int WHEIGHT, int WWIDTH, CPlayer& p1, CPlayer& p2, int MAXSPEEDBALL);
 
 
 protected:
