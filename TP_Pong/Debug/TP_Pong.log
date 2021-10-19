@@ -1,8 +1,10 @@
 ﻿  Affichage.cpp
   CBall.cpp
-D:\Home\Documents\Ludus B\Algo\C++\TP_Pong_SDL\TP_Pong\CBall.cpp(163,26): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
+  CPlayer.cpp
+  Event.cpp
   Init.cpp
+  Update.cpp
+D:\Home\Documents\Ludus B\Algo\C++\TP_Pong_SDL\TP_Pong\Update.cpp(29,15): warning C4244: 'argument' : conversion de 'time_t' en 'unsigned int', perte possible de données
   main.cpp
-D:\Home\Documents\Ludus B\Algo\C++\TP_Pong_SDL\TP_Pong\main.cpp(161,15): warning C4244: 'argument' : conversion de 'time_t' en 'unsigned int', perte possible de données
   Génération de code en cours...
   TP_Pong.vcxproj -> D:\Home\Documents\Ludus B\Algo\C++\TP_Pong_SDL\Debug\TP_Pong.exe

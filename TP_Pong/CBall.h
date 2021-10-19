@@ -2,12 +2,11 @@
 
 #include "SDL.h"
 #include "CPlayer.h"
+#include "CRenderer.h"
+#include "CText.h"
 
 class CBall {
 private:
-	/*int width;
-	int height;
-	float x, y;*/
 	SDL_Rect rectB;
 
 	int speedx, speedy;
@@ -43,7 +42,7 @@ public:
 	//Movement
 	void LaunchBall(int MAXSPEEDBALL, int WWIDTH, int WHEIGHT, int winnerRound);
 	void moveBall();
-	void checkPos(int WHEIGHT, int WWIDTH, CPlayer& p1, CPlayer& p2, int MAXSPEEDBALL);
+	void checkPos(int WHEIGHT, int WWIDTH, CPlayer& p1, CPlayer& p2, int MAXSPEEDBALL, CRenderer &render, TextStyle style);
 
 
 protected:

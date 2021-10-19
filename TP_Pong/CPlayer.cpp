@@ -10,23 +10,16 @@
 //OUTPUT: The player
 CPlayer::CPlayer()
 {
-	/*this->height = height;
-	this->width = width;
-	this->x = x;
-	this->y = y;
-	this->actualPhase = actualPhase;
-	this->pTexture = pTexture;
-	this->score = score;*/
 	this->actualPhase = phase::IDLE;
 	this->pTexture = NULL;
+	this->pTextScore = NULL;
 	this->score = 0;
 
-	//this->rectP = new SDL_Rect;
 	this->rectP.x = 0;
 	this->rectP.y = 0;
 	this->rectP.w = 0;
 	this->rectP.h = 0;
-	//this->rectScore = new SDL_Rect;
+
 	this->rectScore.x = 0;
 	this->rectScore.y = 0;
 	this->rectScore.w = 0;
@@ -38,7 +31,6 @@ CPlayer::CPlayer()
 //OUPUT	: /
 CPlayer::~CPlayer()
 {
-	//delete rectP;
 	SDL_DestroyTexture(this->pTexture);
 	SDL_DestroyTexture(this->pTextScore);
 }
@@ -60,8 +52,8 @@ void CPlayer::setHeight(int height)
 }
 
 //GOAL	: Set x
-//INPUT	: Xidth
-//OUPUT	: Xidth of player set
+//INPUT	: X
+//OUPUT	: X of player set
 void CPlayer::setX(int x)
 {
 	this->rectP.x= x;
@@ -75,6 +67,9 @@ void CPlayer::setY(int y)
 	this->rectP.y = y;
 }
 
+//GOAL  : Set rect
+//INPUT : x, y, width, height
+//OUTPUT: Rect set
 void CPlayer::setRect(int x, int y, int width, int height)
 {
 	this->rectP.x = x;
@@ -107,6 +102,9 @@ void CPlayer::setScore(int score)
 	this->score = score;
 }
 
+//GOAL  : Set text score
+//INPUT : style and render
+//OUTPUT: Text score set
 void CPlayer::setTextScore(TextStyle style, SDL_Renderer* render)
 {
 	//Get score player 1
@@ -118,6 +116,9 @@ void CPlayer::setTextScore(TextStyle style, SDL_Renderer* render)
 	this->pTextScore = SDL_CreateTextureFromSurface(render, pScore);
 }
 
+//GOAL  : Set rect
+//INPUT : X, Y, width, height
+//OUTPUT: Rect set
 void CPlayer::setRectScore(int x, int y, int width, int height)
 {
 	this->rectScore.x = x;
@@ -158,6 +159,9 @@ int CPlayer::getY()
 	return this->rectP.y;
 }
 
+//GOAL  : Get rect
+//INPUT : /
+//OUTPUT: The rect
 SDL_Rect* CPlayer::getRect()
 {
 	return &this->rectP;
@@ -187,11 +191,17 @@ int CPlayer::getScore()
 	return this->score;
 }
 
+//GOAL  : Get text score
+//INPUT : / 
+//OUTPUT: Text score
 SDL_Texture* CPlayer::getTextScore()
 {
 	return this->pTextScore;
 }
 
+//GOAL  : Get rect score
+//INPUT : /
+//OUTPUT: The rect score
 SDL_Rect* CPlayer::getRectScore()
 {
 	return &rectScore;

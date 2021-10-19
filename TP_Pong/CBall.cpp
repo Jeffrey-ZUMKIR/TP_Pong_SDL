@@ -8,14 +8,6 @@
 //OUTPUT: The ball
 CBall::CBall()
 {
-	//this->rectB = new SDL_Rect;
-	/*this->width = width;
-	this->height = height;
-	this->x = x;
-	this->y = y;
-	this->speedx = speedx;
-	this->speedy = speedy;
-	this->pTexture = pTexture;*/
 	this->speedx = 0;
 	this->speedy = 0;
 	rectB = { 0,0,0,0 };
@@ -160,7 +152,7 @@ int CBall::getSpeedy()
 //OUTPUT: The speed of the ball and it's direction
 void CBall::LaunchBall(int MAXSPEEDBALL, int WWIDTH, int WHEIGHT, int winnerRound)
 {
-	this->rectB.y = WHEIGHT / static_cast<float>(2);
+	this->rectB.y = static_cast<int>(WHEIGHT / static_cast<float>(2));
 	if (winnerRound == 1) {
 		this->rectB.x = static_cast<int> (WWIDTH / static_cast<float>(4));
 	}
@@ -174,7 +166,7 @@ void CBall::LaunchBall(int MAXSPEEDBALL, int WWIDTH, int WHEIGHT, int winnerRoun
 //GOAL	: Check the collision of the ball with his collision
 //INPUT	: Height of the window, width of the window, rect of the player 1 and 2
 //OUTPUT: New speed for the ball
-void CBall::checkPos(int WHEIGHT, int WWIDTH, CPlayer& p1, CPlayer& p2, int MAXSPEEDBALL)
+void CBall::checkPos(int WHEIGHT, int WWIDTH, CPlayer& p1, CPlayer& p2, int MAXSPEEDBALL, CRenderer& render, TextStyle style)
 {
 	//Check if the ball is in collision with the top of the window
 	if (this->getY() <= 0) {
@@ -222,10 +214,12 @@ void CBall::checkPos(int WHEIGHT, int WWIDTH, CPlayer& p1, CPlayer& p2, int MAXS
 	//Call the function move the ball to change is position for the next frame
 	if (this->getX() <= 0) {
 		p2.setScore(p2.getScore() + 1);
+		p2.setTextScore(style, render.getRenderer());
 		LaunchBall(MAXSPEEDBALL, WWIDTH, WHEIGHT, 1);
 	}
 	else if (this->getX() + this->getWidth() >= WWIDTH) {
 		p1.setScore(p1.getScore() + 1);
+		p1.setTextScore(style, render.getRenderer());
 		LaunchBall(MAXSPEEDBALL, WWIDTH, WHEIGHT, -1);
 	}
 	this->moveBall();

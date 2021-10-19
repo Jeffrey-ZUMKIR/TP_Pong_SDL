@@ -8,10 +8,6 @@
 
 class CPlayer {
 private:
-	/*int width;
-	int height;
-	int x, y;*/
-	//rect myRect;
 	SDL_Rect rectP;
 	SDL_Texture* pTexture;
 

@@ -1,6 +1,6 @@
 #include "Event.h"
 
-void HandleEvent(SDL_Event& event, int &close, CPlayer &player1, CPlayer &player2)
+void HandleEvent(SDL_Event& event, int &close, CPlayer &player1, CPlayer &player2, bool &roundStart, bool &gameOn)
 {
     //Check for event
     while (SDL_PollEvent(&event)) {
@@ -24,6 +24,11 @@ void HandleEvent(SDL_Event& event, int &close, CPlayer &player1, CPlayer &player
             case SDLK_DOWN:
                 player2.setPhase(phase::DOWN);
                 break;
+            case SDLK_SPACE:
+                if (!gameOn) {
+                    gameOn = true;
+                    roundStart = true;
+                }
             default:
                 break;
             }
