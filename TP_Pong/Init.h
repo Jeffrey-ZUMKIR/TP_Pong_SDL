@@ -7,5 +7,6 @@
 #include "CText.h"
 #include <string>
 #include "CEndScreen.h"
+#include "Affichage.h"
 
-void Initialisation(int WWIDTH, int WHEIGHT, CRenderer &render, CPlayer &player1, CPlayer &player2, CBall &ball, TextStyle &style, CEndScreen &end);
+void Initialisation(int WWIDTH, int WHEIGHT, CRenderer &render, CPlayer &player1, CPlayer &player2, CBall &ball, TextStyle &style, CEndScreen &end, TextureManager &m_textureManager);

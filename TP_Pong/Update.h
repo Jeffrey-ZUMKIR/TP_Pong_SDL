@@ -4,8 +4,9 @@
 #include "CRenderer.h"
 #include <time.h> 
 #include <iostream>
+#include "Affichage.h"
 
-void Update(CPlayer &player1, CPlayer &player2, CBall &ball, int WWIDTH, int WHEIGHT, int MAXSPEEDBALL, TextStyle &style, CRenderer &render, bool &roundStart, int &winnerRound, bool &gameOn, int MAXSCORE);
+void Update(CPlayer &player1, CPlayer &player2, CBall &ball, int WWIDTH, int WHEIGHT, int MAXSPEEDBALL, TextStyle &style, CRenderer &render, bool &roundStart, int &winnerRound, bool &gameOn, int MAXSCORE, TextureManager &m_textureManager);
 
 void startRound(int MAXSPEEDBALL, int WWIDTH, int WHEIGHT, int& winnerRound, bool& roundStart, CPlayer &player1, CPlayer &player2, CBall &ball);
 

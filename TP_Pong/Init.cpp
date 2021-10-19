@@ -3,7 +3,7 @@
 //GOAL  : Initialiser chaque object
 //INPUT : All the object
 //OUTPUT: All the object initialize
-void Initialisation(int WWIDTH, int WHEIGHT, CRenderer &render, CPlayer &player1, CPlayer &player2, CBall& ball, TextStyle &style, CEndScreen &end)
+void Initialisation(int WWIDTH, int WHEIGHT, CRenderer &render, CPlayer &player1, CPlayer &player2, CBall& ball, TextStyle &style, CEndScreen &end, TextureManager &m_textureManager)
 {
     //Set window
     render.setWindow(SDL_CreateWindow("SDL2", SDL_WINDOWPOS_UNDEFINED,
@@ -66,4 +66,10 @@ void Initialisation(int WWIDTH, int WHEIGHT, CRenderer &render, CPlayer &player1
     end.setRect((WWIDTH / 2) - 250, (WHEIGHT / 2) - 50, 500, 100);
 
     SDL_FreeSurface(pRestart);
+
+    m_textureManager.loadPNG("./Assets/Player.png", "player", render.getRenderer());
+    m_textureManager.loadPNG("./Assets/Ball.png", "ball", render.getRenderer());
+    m_textureManager.loadTEXT("Press space to play again", "endGame", render.getRenderer(), style);
+    m_textureManager.loadTEXT(to_string(player1.getScore()), "score1", render.getRenderer(), style);
+    m_textureManager.loadTEXT(to_string(player2.getScore()), "score2", render.getRenderer(), style);
 }

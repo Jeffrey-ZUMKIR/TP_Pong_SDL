@@ -7,9 +7,6 @@
 #include <cstdlib>
 #include "CPlayer.h"
 #include "CBall.h"
-//#include <time.h> 
-//#include <iostream>
-//#include <string>
 #include "CRenderer.h"
 #include "Init.h"
 #include "CText.h"
@@ -43,7 +40,9 @@ int main(int argc, char** argv)
 
     CEndScreen end;
 
-    Initialisation(WWIDTH, WHEIGHT, render, player1, player2, ball, style, end);
+    TextureManager m_textureManager;
+
+    Initialisation(WWIDTH, WHEIGHT, render, player1, player2, ball, style, end, m_textureManager);
 
     if (!render.getWindow()) {
         return -1;
@@ -85,10 +84,10 @@ int main(int argc, char** argv)
 
         HandleEvent(event, close, player1, player2, roundStart, gameOn);
         if (gameOn) {
-            Update(player1, player2, ball, WWIDTH, WHEIGHT, MAXSPEEDBALL, style, render, roundStart, winnerRound, gameOn, MAXSCORE);
+            Update(player1, player2, ball, WWIDTH, WHEIGHT, MAXSPEEDBALL, style, render, roundStart, winnerRound, gameOn, MAXSCORE, m_textureManager);
         }
-        //Display
-        Affiche(render, player1, player2, ball, rectDestBorder, gameOn, end);
+        //Display      
+        m_textureManager.render(player1, player2, ball, render.getRenderer(), style, gameOn, end, rectDestBorder);
 
         //60 FPS
         SDL_Delay(1000 / 60);  

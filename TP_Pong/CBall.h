@@ -42,7 +42,7 @@ public:
 	//Movement
 	void LaunchBall(int MAXSPEEDBALL, int WWIDTH, int WHEIGHT, int winnerRound);
 	void moveBall();
-	void checkPos(int WHEIGHT, int WWIDTH, CPlayer& p1, CPlayer& p2, int MAXSPEEDBALL, CRenderer &render, TextStyle style);
+	void checkPos(int WHEIGHT, int WWIDTH, CPlayer& p1, CPlayer& p2, int MAXSPEEDBALL, CRenderer &render, TextStyle &style);
 
 
 protected:

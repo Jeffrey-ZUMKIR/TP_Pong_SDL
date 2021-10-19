@@ -3,13 +3,15 @@
 //GOAL  : Update everything about the object
 //INPUT : The players, the ball, the size of the window, the max speed of the ball, the style of text, the renderer, the bool for the game and the score max
 //OUTPUT: New position/texture of the object
-void Update(CPlayer &player1, CPlayer &player2, CBall &ball, int WWIDTH, int WHEIGHT, int MAXSPEEDBALL, TextStyle &style, CRenderer &render, bool &roundStart, int &winnerRound, bool &gameOn, int MAXSCORE)
+void Update(CPlayer &player1, CPlayer &player2, CBall &ball, int WWIDTH, int WHEIGHT, int MAXSPEEDBALL, TextStyle &style, CRenderer &render, bool &roundStart, int &winnerRound, bool &gameOn, int MAXSCORE, TextureManager &m_textureManager)
 {
     //If start of the round, launch ball and set back all the variables and the texture of the scores
     if (roundStart) {
         startRound(MAXSPEEDBALL, WWIDTH, WHEIGHT, winnerRound, roundStart, player1, player2, ball);
-        player1.setTextScore(style, render.getRenderer());
-        player2.setTextScore(style, render.getRenderer());
+        m_textureManager.loadTEXT(to_string(player1.getScore()), "score1", render.getRenderer(), style);
+        m_textureManager.loadTEXT(to_string(player2.getScore()), "score2", render.getRenderer(), style);
+        //player1.setTextScore(style, render.getRenderer());
+        //player2.setTextScore(style, render.getRenderer());
     }
     //Move the players
     player1.move(WHEIGHT); 
